@@ -7,8 +7,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.json.JSONObject;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 
 import java.io.IOException;
 
@@ -29,12 +28,11 @@ public class GitHubPullRequestReview {
     }
 
     @SuppressWarnings("deprecation")
-	public static void createPullRequestReview(String reviewBody, String event) {
-    	final Logger logger = LogManager.getLogger(GitHubPullRequestReview.class);
+	public static void createPullRequestReview(String reviewBody, String event) {    	
         String url = GITHUB_API_URL + "/repos/" + OWNER + "/" + REPO + "/pulls/" + PULL_NUMBER + "/reviews";
         String json = new JSONObject()
                 .put("commit_id", "75a3e932564eb58fed72d0541fe689ba27e4b844")
-                .put("body", reviewBody)
+                .put("body", TestReviewBody)
                 .put("event", event)
                 .toString();
 
@@ -50,15 +48,15 @@ public class GitHubPullRequestReview {
 
         try {
             Response response = client.newCall(request).execute();
-            String responseBody = response.body().string();
-            logger.debug("API Response: " + responseBody);
+            String responseBody = response.body().string();            
             if (response.isSuccessful()) {
                 System.out.println("Review submitted successfully.");
+                System.out.println("Added the review Comment onto The PR");
             } else {
                 System.out.println("Error submitting the review.");
+                System.out.println("Check the Api endpoint or otherwise the access Token");
             }
-        } catch (IOException e) {
-        	 logger.error("Error occurred while making API request", e);
+        } catch (IOException e) {        	 
             e.printStackTrace();
         }
     }
